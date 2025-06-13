@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const keywordForUrl = keyword.replace(/\s/g, '-').toLowerCase();
                 const linkUrl = `detail.html?q=${encodeURIComponent(keywordForUrl)}`; 
 
-                // ▼▼▼ PERUBAHAN UKURAN GAMBAR: Dari 240x360 menjadi 400x600 (Medium) ▼▼▼
-                const imageUrl = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(keyword)}&w=400&h=600&c=7&rs=1&p=0&dpr=1.5&pid=1.7`;
+                // ▼▼▼ PERUBAHAN UKURAN GAMBAR: Menjadi Large (600x900) ▼▼▼
+                const imageUrl = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(keyword)}&w=600&h=900&c=7&rs=1&p=0&dpr=1.5&pid=1.7`;
                 
                 const newTitle = generateSeoTitle(keyword);
                 const cardHTML = `<article class="content-card"><a href="${linkUrl}"><img src="${imageUrl}" alt="${newTitle}" loading="lazy"><div class="content-card-body"><h3>${newTitle}</h3></div></a></article>`;
@@ -52,10 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!response.ok) throw new Error('keyword.txt file not found.');
                 const text = await response.text();
                 
-                // ▼▼▼ PERUBAHAN DI SINI: Membersihkan setiap kata kunci ▼▼▼
-                // 1. Pisahkan berdasarkan baris baru
-                // 2. Gunakan .map() untuk .trim() setiap baris (menghapus spasi di awal/akhir)
-                // 3. Filter baris yang kosong setelah di-trim
                 const keywords = text.split('\n')
                                      .map(k => k.trim())
                                      .filter(k => k.trim() !== '');
