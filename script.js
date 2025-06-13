@@ -51,7 +51,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = await fetch('keyword.txt');
                 if (!response.ok) throw new Error('keyword.txt file not found.');
                 const text = await response.text();
-                const keywords = text.split('\n').filter(k => k.trim() !== '');
+                
+                // ▼▼▼ PERUBAHAN DI SINI: Membersihkan setiap kata kunci ▼▼▼
+                // 1. Pisahkan berdasarkan baris baru
+                // 2. Gunakan .map() untuk .trim() setiap baris (menghapus spasi di awal/akhir)
+                // 3. Filter baris yang kosong setelah di-trim
+                const keywords = text.split('\n')
+                                     .map(k => k.trim())
+                                     .filter(k => k.trim() !== '');
+                
                 shuffleArray(keywords);
                 localStorage.setItem('shuffledKeywords', JSON.stringify(keywords));
                 localStorage.setItem('shuffleDate', today);
