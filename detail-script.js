@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const relatedPostsContainer = document.getElementById('related-posts-container');
     const params = new URLSearchParams(window.location.search);
     const keywordFromQuery = params.get('q') || '';
-    const keyword = keywordFromQuery.replace(/-/g, ' ');
+
+    // ▼▼▼ PERUBAHAN DI SINI: Tambahkan .trim() untuk membersihkan spasi sisa ▼▼▼
+    const keyword = keywordFromQuery.replace(/-/g, ' ').trim();
 
     function capitalizeEachWord(str) { if (!str) return ''; return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); }
     function generateSeoTitle(baseKeyword) { const hookWords = ['Best', 'Amazing', 'Cool', 'Inspiring', 'Creative', 'Awesome', 'Stunning', 'Beautiful', 'Unique', 'Ideas', 'Inspiration', 'Designs']; const randomHook = hookWords[Math.floor(Math.random() * hookWords.length)]; const randomNumber = Math.floor(Math.random() * (200 - 55 + 1)) + 55; const capitalizedKeyword = capitalizeEachWord(baseKeyword); return `${randomNumber} ${randomHook} ${capitalizedKeyword}`; }
