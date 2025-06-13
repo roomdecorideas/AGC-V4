@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const originalKeyword = keyword.toLowerCase();
         let relatedCount = 0;
         suggestions.forEach(relatedTerm => {
-            if (relatedTerm.toLowerCase() === originalKeyword || relatedCount >= 8) return;
+            if (relatedTerm.toLowerCase() === originalKeyword || relatedCount >= 10) return;
             relatedCount++;
             const keywordForUrl = relatedTerm.replace(/\s/g, '-').toLowerCase();
             const linkUrl = `detail.html?q=${encodeURIComponent(keywordForUrl)}`;
