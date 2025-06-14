@@ -8,6 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const keyword = keywordFromQuery.replace(/-/g, ' ').trim();
 
+    let lastScrollTop = 0;
+    const header = document.querySelector('header');
+
+    window.addEventListener('scroll', function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop < lastScrollTop) {
+            // User scroll ke ATAS, sembunyikan header
+            header.classList.add('header-hidden');
+        } else {
+            // User scroll ke BAWAH, tampilkan header
+            header.classList.remove('header-hidden');
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Untuk handle di paling atas
+    }, false);
+    
     function capitalizeEachWord(str) { if (!str) return ''; return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); }
     function generateSeoTitle(baseKeyword) { const hookWords = ['Best', 'Amazing', 'Cool', 'Inspiring', 'Creative', 'Awesome', 'Stunning', 'Beautiful', 'Unique', 'Ideas', 'Inspiration', 'Designs']; const randomHook = hookWords[Math.floor(Math.random() * hookWords.length)]; const randomNumber = Math.floor(Math.random() * (200 - 55 + 1)) + 55; const capitalizedKeyword = capitalizeEachWord(baseKeyword); return `${randomNumber} ${randomHook} ${capitalizedKeyword}`; }
 
