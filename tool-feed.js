@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Elemen DOM ---
     const generateBtn = document.getElementById('generate-btn');
     const statusOutput = document.getElementById('status-output');
-    const keywordListInput = document.getElementById('keyword-list'); // BARU: Elemen untuk list keyword
+    const keywordListInput = document.getElementById('keyword-list');
     const startDateInput = document.getElementById('start-date');
     const endDateInput = document.getElementById('end-date');
 
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const imageUrl = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(keyword)}&amp;w=400&amp;h=600&amp;c=7&amp;rs=1&amp;p=0&amp;dpr=1.5&amp;pid=1.7`;
             
             const capitalizedKeyword = capitalizeEachWord(keyword);
-            const hashtag = capitalizedKeyword.replace(/\s/g, '');
-            const description = `Craving new ideas for ${capitalizedKeyword}? Discover amazing concepts and stunning visuals. Click to get the full inspiration now! #${hashtag} #HomeDecor #DesignIdeas`;
+            // BARU: Deskripsi dibuat tanpa hashtag dan variabel hashtag dihapus.
+            const description = `Craving new ideas for ${capitalizedKeyword}? Discover amazing concepts and stunning visuals. Click to get the full inspiration now!`;
 
             const escapedTitle = escapeXml(title);
             const escapedDescription = escapeXml(description);
@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Logika Utama Saat Tombol Diklik ---
     generateBtn.addEventListener('click', async () => {
-        // Baca semua nilai input
         const keywordListData = keywordListInput.value;
         const startDateVal = startDateInput.value;
         const endDateVal = endDateInput.value;
@@ -121,31 +120,25 @@ document.addEventListener('DOMContentLoaded', function() {
             generateBtn.disabled = true;
             generateBtn.textContent = 'Generating...';
 
-            // Ambil domain dari file domain.txt
             const domainResponse = await fetch('domain.txt');
             if (!domainResponse.ok) throw new Error('Could not find domain.txt file.');
             const siteUrl = (await domainResponse.text()).trim().replace(/\/$/, '');
             if (!siteUrl) throw new Error('domain.txt file is empty.');
 
-            // BARU: Proses keyword dari textarea, bukan dari file
             const keywordSelection = keywordListData.split('\n').map(k => k.trim()).filter(k => k !== '');
             if (keywordSelection.length === 0) {
                 throw new Error('Keyword list is empty or contains only whitespace.');
             }
 
-            // Menghitung jumlah hari dalam rentang (inklusif)
             const diffTime = Math.abs(endDate - startDate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-            // Menghitung berapa post yang harus didistribusikan per hari
             const postsPerDay = Math.ceil(keywordSelection.length / diffDays);
 
             statusOutput.textContent = `Status: Processing ${keywordSelection.length} keywords over ${diffDays} days (${postsPerDay} posts/day)...`;
             
-            // Hasilkan konten XML dengan logika baru
             const feedXml = generateRssFeed(keywordSelection, siteUrl, startDate, postsPerDay);
 
-            // Buat file dan picu unduhan
             const blob = new Blob([feedXml], { type: 'application/rss+xml;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
